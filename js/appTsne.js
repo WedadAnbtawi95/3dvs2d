@@ -360,12 +360,9 @@ function drawUpdate3d(embedding) {
     .range([-2, 2]);
     for (var i = 0; i < embedding.length; i++) {
 		// positions
-		var x = embedding[i][0];
-        var y = embedding[i][1];
-        var z = embedding[i][2];
-        //var x = linearScaleX(embedding[i][0]);
-        //var y = linearScaleY(embedding[i][1]);
-        //var z = linearScaleZ(embedding[i][2]);
+	var x = linearScaleX(embedding[i][0]);
+        var y = linearScaleY(embedding[i][1]);
+        var z = linearScaleZ(embedding[i][2]);
         stars3d[i].position.x = x;
         stars3d[i].position.y = y;
         stars3d[i].position.z = z;
