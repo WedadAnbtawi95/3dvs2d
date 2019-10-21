@@ -5,7 +5,7 @@ var stars3d = [];
 var stars2d = [];
 var renderer3d, renderer2d;
 var camera3d, camera2d;
-var controls3d;
+var controls3d, controls2d;
 var circlesGeometry;
 var cubesGeometry;
 var worker3d, worker2d;
@@ -201,15 +201,15 @@ function resetScenes(){
 	worker3d.onmessage = function (e) {
         var msg = e.data;
         switch (msg.type) {
-          case 'PROGRESS_STATUS':
-            $('#progress-status3d').text(msg.data);
-            break;
-          case 'PROGRESS_ITER':
-			showProgress3d();
-            $('#progress-iter3d').text(msg.data[0] + 1);
-            $('#progress-error3d').text(msg.data[1].toPrecision(7));
-            $('#progress-gradnorm3d').text(msg.data[2].toPrecision(5));
-            break;
+			case 'PROGRESS_STATUS':
+				$('#progress-status3d').text(msg.data);
+				break;
+			case 'PROGRESS_ITER':
+				showProgress3d();
+				$('#progress-iter3d').text(msg.data[0] + 1);
+				$('#progress-error3d').text(msg.data[1].toPrecision(7));
+				$('#progress-gradnorm3d').text(msg.data[2].toPrecision(5));
+				break;
             case 'PROGRESS_DATA':
                 drawUpdate3d(msg.data);
                 break;
@@ -222,15 +222,15 @@ function resetScenes(){
 	worker2d.onmessage = function (e) {
         var msg = e.data;
         switch (msg.type) {
-          case 'PROGRESS_STATUS':
-            $('#progress-status2d').text(msg.data);
-            break;
-          case 'PROGRESS_ITER':
-			showProgress2d();
-            $('#progress-iter2d').text(msg.data[0] + 1);
-            $('#progress-error2d').text(msg.data[1].toPrecision(7));
-            $('#progress-gradnorm2d').text(msg.data[2].toPrecision(5));
-            break;
+			case 'PROGRESS_STATUS':
+				$('#progress-status2d').text(msg.data);
+				break;
+			case 'PROGRESS_ITER':
+				showProgress2d();
+				$('#progress-iter2d').text(msg.data[0] + 1);
+				$('#progress-error2d').text(msg.data[1].toPrecision(7));
+				$('#progress-gradnorm2d').text(msg.data[2].toPrecision(5));
+				break;
             case 'PROGRESS_DATA':
                 drawUpdate2d(msg.data);
                 break;
@@ -255,6 +255,7 @@ function initScene() {
     camera3d = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
 	camera2d = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
 	controls3d = new THREE.OrbitControls(camera3d, renderer3d.domElement);
+	controls2d = new THREE.OrbitControls(camera2d, renderer2d.domElement);
 	document.getElementById('playground-canvas3d').appendChild(renderer3d.domElement);
 	document.getElementById('playground-canvas2d').appendChild(renderer2d.domElement);
     camera3d.position.set(-1, 0, 4);
@@ -268,62 +269,62 @@ function initScene() {
 	worker3d.onmessage = function (e) {
         var msg = e.data;
         switch (msg.type) {
-          case 'PROGRESS_STATUS':
-            $('#progress-status3d').text(msg.data);
-            break;
-          case 'PROGRESS_ITER':
-			showProgress3d();
-            $('#progress-iter3d').text(msg.data[0] + 1);
-            $('#progress-error3d').text(msg.data[1].toPrecision(7));
-            $('#progress-gradnorm3d').text(msg.data[2].toPrecision(5));
-            break;
-            case 'PROGRESS_DATA':
-                drawUpdate3d(msg.data);
-                break;
-            case 'DONE':
-                drawUpdate3d(msg.data);
-                break;
-            default:
+			case 'PROGRESS_STATUS':
+				$('#progress-status3d').text(msg.data);
+				break;
+			case 'PROGRESS_ITER':
+				showProgress3d();
+				$('#progress-iter3d').text(msg.data[0] + 1);
+				$('#progress-error3d').text(msg.data[1].toPrecision(7));
+				$('#progress-gradnorm3d').text(msg.data[2].toPrecision(5));
+				break;
+			case 'PROGRESS_DATA':
+					drawUpdate3d(msg.data);
+					break;
+			case 'DONE':
+					drawUpdate3d(msg.data);
+					break;
+			default:
         }
     }
 	worker2d.onmessage = function (e) {
         var msg = e.data;
         switch (msg.type) {
-          case 'PROGRESS_STATUS':
-            $('#progress-status2d').text(msg.data);
-            break;
-          case 'PROGRESS_ITER':
-			showProgress2d();
-            $('#progress-iter2d').text(msg.data[0] + 1);
-            $('#progress-error2d').text(msg.data[1].toPrecision(7));
-            $('#progress-gradnorm2d').text(msg.data[2].toPrecision(5));
-            break;
+			case 'PROGRESS_STATUS':
+				$('#progress-status2d').text(msg.data);
+				break;
+			case 'PROGRESS_ITER':
+				showProgress2d();
+				$('#progress-iter2d').text(msg.data[0] + 1);
+				$('#progress-error2d').text(msg.data[1].toPrecision(7));
+				$('#progress-gradnorm2d').text(msg.data[2].toPrecision(5));
+				break;
             case 'PROGRESS_DATA':
                 drawUpdate2d(msg.data);
                 break;
-            case 'DONE':
+			case 'DONE':
                 drawUpdate2d(msg.data);
                 break;
             default:
         }
     }
 }
-    function showProgress3d() { 
-        if(document.getElementById('iter3d').style.display=='none') { 
-            document.getElementById('iter3d').style.display='block'; 
-			document.getElementById('error3d').style.display='block'; 
-			document.getElementById('gradnorm3d').style.display='block'; 
-        } 
-        return false;
+function showProgress3d() { 
+    if(document.getElementById('iter3d').style.display=='none') { 
+		document.getElementById('iter3d').style.display='block'; 
+		document.getElementById('error3d').style.display='block'; 
+		document.getElementById('gradnorm3d').style.display='block'; 
     } 
-	function showProgress2d() { 
-        if(document.getElementById('iter2d').style.display=='none') { 
-            document.getElementById('iter2d').style.display='block'; 
-			document.getElementById('error2d').style.display='block'; 
-			document.getElementById('gradnorm2d').style.display='block'; 
-        } 
-        return false;
-    }
+    return false;
+} 
+function showProgress2d() { 
+    if(document.getElementById('iter2d').style.display=='none') { 
+        document.getElementById('iter2d').style.display='block'; 
+		document.getElementById('error2d').style.display='block'; 
+		document.getElementById('gradnorm2d').style.display='block'; 
+    } 
+    return false;
+}
 function scale (value, median, q1, q3){
 	return (value - median)/(q3-q1);
 }
