@@ -5,7 +5,7 @@ var stars3d = [];
 var stars2d = [];
 var renderer3d, renderer2d;
 var camera3d, camera2d;
-var controls3d, controls2d;
+var controls3d;
 var circlesGeometry;
 var cubesGeometry;
 var worker3d, worker2d;
@@ -215,6 +215,7 @@ function resetScenes(){
                 break;
             case 'DONE':
                 drawUpdate3d(msg.data);
+		worker3d.terminate();
                 break;
             default:
         }
@@ -236,6 +237,7 @@ function resetScenes(){
                 break;
             case 'DONE':
                 drawUpdate2d(msg.data);
+		worker2d.terminate();
                 break;
             default:
         }
@@ -255,7 +257,6 @@ function initScene() {
     camera3d = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
 	camera2d = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
 	controls3d = new THREE.OrbitControls(camera3d, renderer3d.domElement);
-	controls2d = new THREE.OrbitControls(camera2d, renderer2d.domElement);
 	document.getElementById('playground-canvas3d').appendChild(renderer3d.domElement);
 	document.getElementById('playground-canvas2d').appendChild(renderer2d.domElement);
     camera3d.position.set(-1, 0, 4);
@@ -283,7 +284,7 @@ function initScene() {
                 break;
             case 'DONE':
                 drawUpdate3d(msg.data);
-		console.log("done");
+		worker3d.terminate();
                 break;
             default:
         }
@@ -305,6 +306,7 @@ function initScene() {
                 break;
             case 'DONE':
                 drawUpdate2d(msg.data);
+		worker2d.terminate();
                 break;
             default:
         }
@@ -367,8 +369,6 @@ function drawUpdate3d(embedding) {
         stars3d[i].position.z = z;
     }
     renderer3d.render(scene3d, camera3d);
-	console.log(controls3d.enabled);
-	controls3d.update();
 };
 function drawUpdate2d(embedding) {
 	var xcolumn = embedding.map(function(value,index) { return value[0]; });
