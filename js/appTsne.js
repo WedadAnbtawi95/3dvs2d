@@ -370,6 +370,7 @@ function drawUpdate3d(embedding) {
         stars3d[i].position.z = z;
     }
     renderer3d.render(scene3d, camera3d);
+	console.log(controls3d.enabled());
 };
 function drawUpdate2d(embedding) {
 	var xcolumn = embedding.map(function(value,index) { return value[0]; });
