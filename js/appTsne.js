@@ -283,7 +283,7 @@ function initScene() {
                 break;
             case 'DONE':
                 drawUpdate3d(msg.data);
-		worker3d.terminate();
+		console.log("done");
                 break;
             default:
         }
