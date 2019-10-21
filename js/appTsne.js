@@ -215,7 +215,6 @@ function resetScenes(){
                 break;
             case 'DONE':
                 drawUpdate3d(msg.data);
-		worker3d.terminate();
                 break;
             default:
         }
@@ -237,7 +236,6 @@ function resetScenes(){
                 break;
             case 'DONE':
                 drawUpdate2d(msg.data);
-		worker2d.terminate();
                 break;
             default:
         }
@@ -284,7 +282,6 @@ function initScene() {
                 break;
             case 'DONE':
                 drawUpdate3d(msg.data);
-		worker3d.terminate();
                 break;
             default:
         }
@@ -306,7 +303,6 @@ function initScene() {
                 break;
             case 'DONE':
                 drawUpdate2d(msg.data);
-		worker2d.terminate();
                 break;
             default:
         }
